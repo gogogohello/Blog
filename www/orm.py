@@ -6,7 +6,7 @@ import asyncio
 import logging
 import aiomysql
 
-logging.basicCOnfig(level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
 
 
 def log(sql, args=()):
@@ -256,12 +256,14 @@ class Model(dict, metaclass=ModelMetaclass):
 class User(Model):
 	__table__ = 'users'
 
-	id = IntegerField(primary_key=True)
-	name = StringField()
+	id = IntegerField('id', primary_key=True)
+	name = StringField('name')
 
 
-user = User(id=123, name='Rick')
-loop = asyncio.get_event_loop()
-loop.run_until_complete(user.save())
-loop.run_forever()
+if __name == '__main__':
+	user = User(id=123, name='Rick')
+	loop = asyncio.get_event_loop()
+	await create_pool(loop=loop, host='localhost', port='3306', user='root', password='Xmima624', db='test')
+	loop.run_until_complete(user.save())
+	loop.run_forever()
 
