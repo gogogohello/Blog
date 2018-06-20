@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 
 import asyncio
 import logging
@@ -7,13 +8,13 @@ import aiomysql
 
 
 def log(sql, args=()):
-    logging.info('SQL: %s' % sql)
+	logging.info('SQL: %s' % sql)
 
 
 async def create_pool(loop, **kw):
-    log('create database connection pool...')
-    global __pool
-    __pool = await aiomysql.create_pool(
+	logging.info('create database connection pool...')
+	global __pool
+	__pool = await aiomysql.create_pool(
         host=kw.get('host', 'localhost'),
         port=kw.get('port', 3306),
         user=kw['user'],
@@ -24,18 +25,18 @@ async def create_pool(loop, **kw):
         maxsize=kw.get('maxsize', 10),
         minsize=kw.get('minsize', 1),
         loop=loop
-    )
+	)
 
-
+	
 async def destroy_pool():
-    global __pool
-    if __pool is not None:
-        __pool.close()
-        await __pool.wait_closed()
+	global __pool
+	if __pool is not None:
+		__pool.close()
+		await __pool.wait_closed()
 
 
 async def select(sql, args, size=None):
-    log(sql, args)
+	log(sql, args)
     global __pool
     async with __pool.get() as conn:
         async with conn.cursor(aiomysql.DictCursor) as cur:
@@ -142,9 +143,9 @@ class ModelMetaclass(type):
         attrs['__fields__'] = fields
         attrs['__select__'] = 'select `%s`, %s from `%s`' % (primaryKey, ', '.join(escaped_fields), tableName)
         attrs['__insert__'] = 'insert into `%s` (%s, `%s`) values (%s)' % (
-            tableName, ', '.join(escaped_fields), primaryKey, create_args_string(len(escaped_fields) + 1))
+        tableName, ', '.join(escaped_fields), primaryKey, create_args_string(len(escaped_fields) + 1))
         attrs['__update__'] = 'update `%s` set %s where `%s`=?' % (
-            tableName, ', '.join(map(lambda f: '`%s`=?' % (mappings.get(f).name or f), fields)), primaryKey)
+        tableName, ', '.join(map(lambda f: '`%s`=?' % (mappings.get(f).name or f), fields)), primaryKey)
         attrs['__delete__'] = 'delete from `%s` where `%s`=?' % (tableName, primaryKey)
         return type.__new__(cls, name, bases, attrs)
 
@@ -246,18 +247,21 @@ class Model(dict, metaclass=ModelMetaclass):
 
 class User(Model):
     __table__ = 'users'
+
     id = IntegerField('id', primary_key=True)
     name = StringField('name')
 
 
-async def test(looper):
-    await create_pool(loop=looper, host='localhost', port='3306', user='root', password='Xmima624!', db='test')
-    user = User(id=123, name='Rick')
-    r = await user.findAll()
-    print(r)
-
-
 if __name__ == '__main__':
+    user = User(id=123, name='Rick')
+
+
+    async def test(loop):
+        await create_pool(loop=loop, host='localhost', port='3306', user='root', password='Xmima624!', db='test')
+        r = await user.findAll()
+        print(r)
+
+
     loop = asyncio.get_event_loop()
     loop.run_until_complete(test(loop))
     loop.close()
