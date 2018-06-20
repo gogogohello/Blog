@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-import asyncio, logging
-
+import asyncio
+import logging
 import aiomysql
+
+logging.basicCOnfig(level=logging.INFO)
 
 
 def log(sql, args=()):
@@ -28,6 +30,13 @@ async def create_pool(loop, **kw):
 	)
 
 
+async def destroy_pool():
+	global __pool
+	if __pool is not None:
+		__pool.close()
+		await __pool.wait_closed()
+
+
 async def select(sql, args, size=None):
 	log(sql, args)
 	global __pool
@@ -49,7 +58,7 @@ async def execute(sql, args, autocommit=True):
 		if not autocommit:
 			await conn.begin()
 		try:
-			async with conn.cursor(aiomysql.DictCursor) as cur:
+			async with conn.cursor() as cur:
 				await cur.execute(sql.replace('?', '%s'), args)
 				affected = cur.rowcount
 			if not autocommit:
