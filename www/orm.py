@@ -19,7 +19,7 @@ async def create_pool(loop, **kw):
         user=kw['user'],
         password=kw['password'],
         db=kw['db'],
-        charset=kw.get('charset', 'utf-8'),
+        charset=kw.get('charset', 'utf8'),
         autocommit=kw.get('audocommit', True),
         maxsize=kw.get('maxsize', 10),
         minsize=kw.get('minsize', 1),
@@ -233,7 +233,7 @@ class Model(dict, metaclass=ModelMetaclass):
     async def update(self):
         args = list(map(self.getValue, self.__fields__))
         args.append(self.getValue(self.__primary_key__))
-        rows = await execute(self.__insert__, args)
+        rows = await execute(self.__update__, args)
         if rows != 1:
             logging.warn('failed to update by primary key: affected rows: %s' % rows)
 
@@ -245,16 +245,17 @@ class Model(dict, metaclass=ModelMetaclass):
 
 
 class User(Model):
-    __table__ = 'users'
     id = IntegerField('id', primary_key=True)
     name = StringField('name')
 
 
 async def test(looper):
-    await create_pool(loop=looper, host='localhost', port='3306', user='root', password='Xmima624!', db='test')
-    user = User(id=123, name='Rick')
-    r = await user.findAll()
-    print(r)
+	await create_pool(loop=looper, host='localhost', port=3306, user='root', password='Xmima624!', db='test')
+	user = User(id=123, name='Rick')
+	rows = await user.save()
+	print(rows)
+	result = await user.findAll()
+	print(result)
 
 
 if __name__ == '__main__':
