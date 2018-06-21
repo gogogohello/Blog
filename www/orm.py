@@ -245,13 +245,13 @@ class Model(dict, metaclass=ModelMetaclass):
 
 
 class User(Model):
-    id = IntegerField('id', primary_key=True)
+    user_id = IntegerField('user_id', primary_key=True)
     name = StringField('name')
 
 
 async def test(looper):
 	await create_pool(loop=looper, host='localhost', port=3306, user='root', password='Xmima624!', db='test')
-	user = User(id=123, name='Rick')
+	user = User(user_id=123, name='Rick')
 	rows = await user.save()
 	print(rows)
 	result = await user.findAll()
@@ -261,4 +261,4 @@ async def test(looper):
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()
     loop.run_until_complete(test(loop))
-    loop.close()
+    loop.run_forever()
