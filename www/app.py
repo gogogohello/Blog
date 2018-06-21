@@ -2,6 +2,14 @@
 # -*- coding: utf-8 -*-
 
 
+__author__ = 'Rick'
+
+
+'''
+async web application
+'''
+
+
 import logging, asyncio, os, json, time
 from datetime import datetime
 from aiohttp import web
