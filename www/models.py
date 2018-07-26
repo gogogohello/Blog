@@ -39,7 +39,7 @@ class Blog(Model):
 class Comment(Model):
 	__table__ = 'comments'
 
-	id = StringFiled(primary_key=True, default=next_id, ddl='varchar(50)')
+	id = StringField(primary_key=True, default=next_id, ddl='varchar(50)')
 	blog_id = StringField(ddl='varchar(50)')
 	user_id = StringField(ddl='varchar(50)')
 	user_name = StringField(ddl='varchar(50)')
