@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 
-__author__ 'Rick'
+__author__ = 'Rick'
 
 
 '''

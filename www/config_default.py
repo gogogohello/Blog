@@ -14,9 +14,9 @@ configs {
 	'db':{
 		'host': '127.0.0.1',
 		'port': 3306,
-		'user': 'www',
-		'password': 'www',
-		'db': 'awesome'
+		'user': 'root',
+		'password': 'Xmima624!',
+		'db': 'test'
 	},
 	'session': {
 		'secret': 'Awesome'
