@@ -4,25 +4,19 @@
 
 __author__ = 'Rick'
 
-
 '''
 async web application
 '''
 
-
-import logging, asyncio, os, json, time
+import logging; logging.basicConfig(level=logging.INFO)
+import asyncio, os, json, time
 from datetime import datetime
-
 
 from aiohttp import web
 from jinja2 import Environment, FileSystemLoader
 
-
 import orm
 from coroweb import add_routes, add_static
-
-
-logging.basicConfig(level=logging.INFO)
 
 
 def init_jinja2(app, **kw):
@@ -71,6 +65,7 @@ async def response_factory(app, handler):
 	async def response(request):
 		logging.info('Response handler...')
 		r = await handler(request)
+		logging.info('Response handler end ')
 		if isinstance(r, web.StreamResponse):
 			return r
 		if isinstance(r, bytes):
@@ -87,7 +82,7 @@ async def response_factory(app, handler):
 			template = r.get('__template__')
 			if template is None:
 				resp = web.Response(body=json.dumps(r, ensure_ascii=False, default=lambda o: o.__dict__).encode('utf-8'))
-				resp.content_type = 'application/json,charset=utf-8'
+				resp.content_type = 'application/json;charset=utf-8'
 				return resp
 			else:
 				resp = web.Response(body=app['__templating__'].get_template(template).render(**r).encode('utf-8'))
@@ -100,6 +95,7 @@ async def response_factory(app, handler):
 			if isinstance(t, int) and t >= 100 and t < 600:
 				return web.Response(t, str(m))
 		#default:
+		logging.info('response_factory r: ', str(r))
 		resp = web.Response(body=str(r).encode('utf-8'))
 		resp.content_type = 'text/plain;charset=utf-8'
 		return resp
@@ -124,8 +120,8 @@ def index(request):
     return web.Response(body=b'<h1>Ricks Blog</h1>', content_type='text/html')
 
 
-async def init(loop):
-	await orm.create_pool(loop=loop, host='localhost', port=3306, user='root', password='Xmima624!', db='test')
+async def init(looper):
+	await orm.create_pool(loop=looper, host='localhost', port=3306, user='root', password='Xmima624!', db='test')
 	app = web.Application(loop=loop, middlewares=[logger_factory, response_factory])
 	init_jinja2(app, filters=dict(datetime=datetime_filter))
 	add_routes(app, 'handlers')

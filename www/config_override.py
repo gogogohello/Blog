@@ -6,7 +6,7 @@
 Override configurations.
 '''
 
-__author__ = 'Michel Liao'
+__author__ = 'Rick'
 
 
 config = {

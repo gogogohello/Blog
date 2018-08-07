@@ -6,7 +6,7 @@
 Default configurations.
 '''
 
-__author__ = 'Michael Liao'
+__author__ = 'Rick'
 
 
 configs {
@@ -19,6 +19,6 @@ configs {
 		'db': 'test'
 	},
 	'session': {
-		'secret': 'Awesome'
+		'secret': 'Xmima624'
 	}
 }
