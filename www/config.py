@@ -31,7 +31,7 @@ class Dict(dict):
 		self[key] = value
 
 
-def merge(defualts, override):
+def merge(defaults, override):
 	r = {}
 	for k, v in defaults.items():
 		if k in override:
@@ -41,6 +41,7 @@ def merge(defualts, override):
 				r[k] = override[k]
 		else:
 			r[k] = v
+	return r
 
 
 def toDict(d):
@@ -55,7 +56,7 @@ configs = config_default.configs
 
 try:
 	import config_override
-	configs = merge(config), config_override.configs
+	configs = merge(configs, config_override.configs)
 except ImportError:
 	pass
 

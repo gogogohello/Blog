@@ -103,7 +103,7 @@ class RequestHandler(object):
 				if not request.content_type:
 					return web.HTTPBadRequest('Missing Content-Type')
 				ct = request.content_type.lower()
-				if ct.startwith('application/json'):
+				if ct.startswith('application/json'):
 					params = await request.json()
 					if not isinstance(params, dict):
 						return web.HTTPBadRequest('JSON body must be object.')
@@ -122,7 +122,7 @@ class RequestHandler(object):
 		if kw is None:
 			kw = dict(**request.match_info)
 		else:
-			if not self._has_var_kw_arg and self._name_kw_args:
+			if not self._has_var_kw_arg and self._named_kw_args:
 				# remove all unamed kw:
 				copy = dict()
 				for name in self._named_kw_args:
@@ -141,11 +141,13 @@ class RequestHandler(object):
 			for name in self._required_kw_args:
 				if not name in kw:
 					return web.HTTPBadRequest('Missing argument: %s' % name)
-		logging.info('call with args: %s' % str(kw))
+		logging.info('coroweb call with args: %s' % str(kw))
 		try:
 			r = await self._func(**kw)
+			logging.info('coroweb response == %s' % str(r))
 			return r
 		except APIError as e:
+			logging.info('%s %s %s' % (e.error, e.data, e.message))
 			return dict(error=e.error, data=e.data, message=e.message)
 
 

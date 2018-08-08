@@ -9,7 +9,7 @@ Override configurations.
 __author__ = 'Rick'
 
 
-config = {
+configs = {
 	'db': {
 		'host': '127.0.0.1'
 	}
