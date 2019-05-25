@@ -210,7 +210,7 @@ class Model(dict, metaclass=ModelMetaclass):
     @classmethod
     async def findNumber(cls, selectField, where=None, args=None):
         ' find number by select and where. '
-        sql = ['select %s _num_ from `%s`' % (selectField, cls.__table__)]
+        sql = ['select %s as `_num_` from `%s`' % (selectField, cls.__table__)]
         if where:
             sql.append('where')
             sql.append(where)
@@ -247,10 +247,11 @@ class Model(dict, metaclass=ModelMetaclass):
         if rows != 1:
             logging.warn('failed to remove by primary key: affected rows: %s' % rows)
 
+
 '''
 async def test(looper):
 	await create_pool(loop=looper, host='localhost', port=3306, user='root', password='Xmima624!', db='test')
-	user = User(id=123, name='Rick')
+	user = User(name='admin', email='admin@qq.com', passwd='123456', amdmin=True, image='about:blank')
 	rows = await user.save()
 	print(rows)
 	result = await user.findAll()
@@ -262,4 +263,3 @@ if __name__ == '__main__':
     loop.run_until_complete(test(loop))
     loop.run_forever()
 '''
-

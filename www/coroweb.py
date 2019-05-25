@@ -119,6 +119,7 @@ class RequestHandler(object):
 					kw = dict()
 					for k, v in parse.parse_qs(qs, True).items():
 						kw[k] = v[0]
+		logging.info('coroweb kw: %s', str(kw))
 		if kw is None:
 			kw = dict(**request.match_info)
 		else:
