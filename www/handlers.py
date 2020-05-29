@@ -9,7 +9,7 @@ __author__ = 'Rick'
 
 
 import re, time, json, logging, hashlib, base64, asyncio
-import markdown2
+import markdown2, markdown
 
 from aiohttp import web
 from coroweb import get, post
@@ -99,7 +99,8 @@ async def get_blog(id):
 	comments = await Comment.findAll('blog_id=?', [id], orderBy='created_at desc')
 	for c in comments:
 		c.html_content = text2html(c.content)
-	blog.html_content = markdown2.markdown(blog.content)
+	#blog.html_content = markdown2.markdown(blog.content, extras=['code-friendly', 'break-on-newline', 'fenced-code-blocks', 'cuddled-lists', 'footnotes', 'header-ids', 'numbering'])
+	blog.html_content = markdown.markdown(blog.content, output_format='html5', extensions=['extra', 'admonition', 'codehilite', 'legacy_attrs', 'legacy_em', 'meta', 'nl2br', 'sane_lists', 'smarty', 'toc', 'wikilinks'])
 	return {
 		'__template__': 'blog.html',
 		'blog': blog,
@@ -342,4 +343,6 @@ async def api_get_users(*, page='1'):
 async def get_user(id):
 	user = await User.find(id)
 	return dict(user=user)
+
+
 
