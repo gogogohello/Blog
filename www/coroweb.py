@@ -145,7 +145,6 @@ class RequestHandler(object):
 		logging.info('coroweb call with args: %s' % str(kw))
 		try:
 			r = await self._func(**kw)
-			logging.info('coroweb response == %s' % str(r))
 			return r
 		except APIError as e:
 			logging.info('%s %s %s' % (e.error, e.data, e.message))

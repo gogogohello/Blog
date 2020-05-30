@@ -31,11 +31,11 @@ $(function () {
 
 {% block content %}
 
-    <div class="uk-width-medium-3-4">
-        <article class="uk-article">
+    <div class="codehilite uk-width-medium-3-4">
+        <article class="codehilite uk-article">
             <h2>{{ blog.name }}</h2>
             <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
-            <p>{{ blog.html_content|safe }}</p>
+            <p class="codehilite">{{ blog.html_content|safe }}</p>
         </article>
 
         <hr class="uk-article-divider">
