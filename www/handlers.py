@@ -85,8 +85,7 @@ async def cookie2user(cookie_str):
 
 @get('/')
 async def index(request):
-	summary = 'tree命令可以以树形结构显示文件目录结构，它非常适合于我们给别人介绍我们的文件目录的组成框架，同时该命令使用适当的参数也可以将命令结果输出到文本文件中。'	
-	blogs = await Blog.findAll()
+	blogs = await Blog.findAll(orderBy='created_at desc')
 	return {
 		'__template__': 'blogs.html',
 		'blogs': blogs
@@ -100,7 +99,7 @@ async def get_blog(id):
 	for c in comments:
 		c.html_content = text2html(c.content)
 	#blog.html_content = markdown2.markdown(blog.content, extras=['code-friendly', 'break-on-newline', 'fenced-code-blocks', 'cuddled-lists', 'footnotes', 'header-ids', 'numbering'])
-	blog.html_content = markdown.markdown(blog.content, output_format='html5', extensions=['extra', 'admonition', 'codehilite', 'legacy_attrs', 'legacy_em', 'meta', 'nl2br', 'sane_lists', 'smarty', 'toc', 'wikilinks'])
+	blog.html_content = markdown.markdown(blog.content, output_format='html5', extensions=['extra', 'admonition', 'codehilite', 'nl2br', 'toc'])
 	return {
 		'__template__': 'blog.html',
 		'blog': blog,

@@ -32,6 +32,20 @@
     <script src="/static/js/sticky.min.js"></script>
     <script src="/static/js/vue.min.js"></script>
     <script src="/static/js/awesome.js"></script>
+	<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+		extensions: ["tex2jax.js"],
+		jax: ["input/TeX", "output/HTML-CSS"],
+		tex2jax: {
+			inlineMath: [['$','$'], ['\\(','\\)']],
+			displayMath: [['$$','$$'], ['\\[','\\]']],
+			processEscapes: true
+		},
+		"HTML-CSS": { availableFonts: ["TeX"] }
+	});
+	</script>
+	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+	<!--<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
     {% block beforehead %}<!-- before head  -->{% endblock %}
 </head>
 <body>
@@ -39,7 +53,7 @@
         <div class="uk-container uk-container-center">
             <a href="/" class="uk-navbar-brand">Deep run</a>
             <ul class="uk-navbar-nav">
-                <li data-url="blogs"><a href="/"><i class="uk-icon-home"></i> 文章</a></li>
+                <li data-url="blogs"><a href="/"><i class="uk-icon-home"></i> 笔记</a></li>
                 <li><a target="_blank" href="http://dodobook.com/"><i class="uk-icon-book"></i> 读书</a></li>
                 <li><a target="_blank" href="https://github.com/peedeep"><i class="uk-icon-code"></i> 编程</a></li>
             </ul>
