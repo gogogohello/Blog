@@ -98,7 +98,25 @@ async def get_blog(id):
 	comments = await Comment.findAll('blog_id=?', [id], orderBy='created_at desc')
 	for c in comments:
 		c.html_content = text2html(c.content)
-	blog.html_content = markdown2.markdown(blog.content, extras=['code-friendly', 'break-on-newline', 'fenced-code-blocks', 'cuddled-lists', 'footnotes', 'header-ids', 'numbering'])
+	blog.html_content = markdown2.markdown(blog.content, extras=[
+		'code-friendly', 
+		'break-on-newline',
+		'fenced-code-blocks', 
+		'cuddled-lists', 
+		'footnotes', 
+		'header-ids', 
+		'numbering',
+		'metadata',
+		'nofollow',
+		'pyshell',
+		'smarty-pants',
+		'spoiler',
+		'target-blank-links',
+		'toc',
+		'tables',
+		'use-file-vars',
+		'wiki-tables'
+	])
 	'''
 	blog.html_content = markdown.markdown(blog.content, output_format='html5', extensions=[
 		'extra', 
@@ -116,7 +134,7 @@ async def get_blog(id):
 		'wikilinks'
 	])
 	'''
-	#blog.html_content = markdown.markdown(blog.content, extensions=['codehilite'])
+	#blog.html_content = markdown.markdown(blog.content, extensions=['extra', 'codehilite'])
 	return {
 		'__template__': 'blog.html',
 		'blog': blog,
