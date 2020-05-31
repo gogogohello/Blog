@@ -119,7 +119,6 @@ class RequestHandler(object):
 					kw = dict()
 					for k, v in parse.parse_qs(qs, True).items():
 						kw[k] = v[0]
-		logging.info('coroweb kw: %s', str(kw))
 		if kw is None:
 			kw = dict(**request.match_info)
 		else:
@@ -142,7 +141,6 @@ class RequestHandler(object):
 			for name in self._required_kw_args:
 				if not name in kw:
 					return web.HTTPBadRequest('Missing argument: %s' % name)
-		logging.info('coroweb call with args: %s' % str(kw))
 		try:
 			r = await self._func(**kw)
 			return r

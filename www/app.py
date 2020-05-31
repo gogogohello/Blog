@@ -23,7 +23,6 @@ from handlers import cookie2user, COOKIE_NAME
 
 
 def init_jinja2(app, **kw):
-	logging.info('init jinja2...')
 	options = dict(
 		autoescape = kw.get('autoescape', True),
 		block_start_string = kw.get('block_start_string', '{%'),
@@ -82,9 +81,7 @@ async def data_factory(app, handler):
 
 async def response_factory(app, handler):
 	async def response(request):
-		logging.info('Response handler...')
 		r = await handler(request)
-		logging.info('Response handler end ')
 		if isinstance(r, web.StreamResponse):
 			return r
 		if isinstance(r, bytes):
@@ -115,7 +112,6 @@ async def response_factory(app, handler):
 			if isinstance(t, int) and t >= 100 and t < 600:
 				return web.Response(t, str(m))
 		#default:
-		logging.info('response_factory r: ', str(r))
 		resp = web.Response(body=str(r).encode('utf-8'))
 		resp.content_type = 'text/plain;charset=utf-8'
 		return resp
