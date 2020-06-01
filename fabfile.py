@@ -21,7 +21,7 @@ db_password = 'Xmima624!'
 _TAR_FILE = 'dist-blog.tar.gz'
 
 def build():
-    includes = ['static', 'templates', 'transwarp', 'favicon.ico', '*.py']
+    includes = ['static', 'templates', '*.py']
     excludes = ['test', '.*', '*.pyc', '*.pyo']
     local('rm -f dist/%s' % _TAR_FILE)
     with lcd(os.path.join(os.path.abspath('.'), 'www')):
