@@ -21,7 +21,9 @@
     <meta charset="utf-8" />
     {% block meta %}<!-- block meta  -->{% endblock %}
     <title>{% block title %} ? {% endblock %} - Deep run</title>
-    <link rel="stylesheet" href="/static/css/uikit.min.css">
+	<link rel="icon" href="/static/img/icon.png" type="image/x-icon">
+	<link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon">
+	<link rel="stylesheet" href="/static/css/uikit.min.css">
     <link rel="stylesheet" href="/static/css/uikit.gradient.min.css">
     <link rel="stylesheet" href="/static/css/awesome.css" />
     <link rel="stylesheet" href="/static/css/code.css" />
@@ -70,8 +72,15 @@
                         </div>
                     </li>
                 {% else %}
-                    <li><a href="/signin"><i class="uk-icon-sign-in"></i> 登陆</a></li>
-                    <li><a href="/register"><i class="uk-icon-edit"></i> 注册</a></li>
+					<li class="uk-parent" data-uk-dropdown>
+						<a href="#0"></a>
+						<div class="uk-dropdown uk-dropdown-navbar">
+							<ul class="uk-nav uk-nav-navbar">
+								<li><a href="/signin"><i class="uk-icon-sign-in"></i> 登录</a></li>
+								<li><a href="/register"><i class="uk-icon-edit"></i> 注册</a></li>
+							</ul>
+						</div>
+					</li>
                 {% endif %}
                 </ul>
             </div>
@@ -94,8 +103,9 @@
                     <a target="_blank" href="http://weibo.com/" class="uk-icon-button uk-icon-weibo"></a>
                     <a target="_blank" href="https://github.com/peedeep" class="uk-icon-button uk-icon-github"></a>
                 </p>
-                <p>Powered by <a href="http://deep.run">Deep run</a>. Copyright &copy; 2020. [<a href="/manage/" target="_blank">Manage</a>]</p>
+                <p>Powered by <a href="http://deep.run">深度学习</a>. Copyright &copy; 2020. [<a href="/manage/" target="_blank">Manage</a>]</p>
                 <p><a href="http://deep.run" target="_blank">www.deep.run</a>. All rights reserved.</p>
+				<p><a href="http://beian.miit.gov.cn/">赣ICP备20007269号-1</a></p>
                 <a target="_blank" href="http://www.w3.org/TR/html5/"><i class="uk-icon-html5" style="font-size:64px; color: #444;"></i></a>
             </div>
 
