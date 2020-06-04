@@ -78,25 +78,25 @@ $(function () {
     <div id="vm" class="uk-width-2-3">
         <form v-on="submit: submit" class="uk-form uk-form-stacked">
             <div class="uk-alert uk-alert-danger uk-hidden"></div>
-            <div class="uk-form-row">
-                <label class="uk-form-label">标题:</label>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">标题:</label>
                 <div class="uk-form-controls">
-                    <input v-model="name" name="name" type="text" placeholder="标题" class="uk-width-1-1">
+                    <input v-model="name" name="name" type="text" class="uk-input" id="form-stacked-text" placeholder="标题" class="uk-width-1-1">
                 </div>
             </div>
-            <div class="uk-form-row">
-                <label class="uk-form-label">摘要:</label>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">摘要:</label>
                 <div class="uk-form-controls">
-                    <textarea v-model="summary" rows="4" name="summary" placeholder="摘要" class="uk-width-1-1" style="resize:none;"></textarea>
+                    <textarea v-model="summary" rows="4" name="summary" class="uk-textarea" placeholder="摘要" class="uk-width-1-1" style="resize:none;"></textarea>
                 </div>
             </div>
-            <div class="uk-form-row">
-                <label class="uk-form-label">内容:</label>
+            <div class="uk-margin">
+                <label class="uk-form-label" for="form-stacked-text">内容:</label>
                 <div class="uk-form-controls">
-                    <textarea v-model="content" rows="16" name="content" placeholder="内容" class="uk-width-1-1" style="resize:none;"></textarea>
+                    <textarea v-model="content" rows="16" name="content" class="uk-textarea" placeholder="内容" class="uk-width-1-1" style="resize:none;"></textarea>
                 </div>
             </div>
-            <div class="uk-form-row">
+            <div class="uk-margin">
                 <button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-save"></i> 保存</button>
                 <a href="/manage/blogs" class="uk-button"><i class="uk-icon-times"></i> 取消</a>
             </div>

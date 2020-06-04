@@ -14,7 +14,7 @@ import markdown2, markdown
 from aiohttp import web
 from coroweb import get, post
 
-from models import User, Comment, Blog, next_id
+from models import User, Comment, Blog, Book, next_id
 
 from apis import Page, APIError, APIValueError, APIResourceNotFoundError, APIPermissionError
 from config import configs
@@ -90,6 +90,26 @@ async def index(request):
 		'__template__': 'blogs.html',
 		'blogs': blogs
 	}
+
+
+@get('/page/books')
+async def get_books(*, page='1'):
+	books = await Book.findAll(orderBy='created_at desc')
+	return {
+		'__template__':'books.html',
+		'books': books,
+	}
+
+
+@get('/api/books')
+async def api_books(*, page='1'):
+	page_index = get_page_index(page)
+	num = await Book.findNumber('count(id)')
+	p = Page(num, page_index)
+	if num == 0:
+		return dict(page=p, books=())
+	books = await Book.findAll(orderBy='created_at desc', limit=limit(p.offset, p.limit))
+	return dict(page=p, books=books)
 
 
 @get('/blog/{id}')

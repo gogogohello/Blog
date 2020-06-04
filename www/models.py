@@ -4,7 +4,7 @@
 
 import time, uuid
 
-from orm import Model, StringField, BooleanField, FloatField, TextField
+from orm import Model, StringField, BooleanField, FloatField, TextField, IntegerField
 
 
 def next_id():
@@ -45,6 +45,17 @@ class Comment(Model):
 	user_name = StringField(ddl='varchar(50)')
 	user_image = StringField(ddl='varchar(500)')
 	content = TextField()
+	created_at = FloatField(default=time.time)
+
+class Book(Model):
+	__table__ = 'books'
+
+	id = StringField(primary_key=True, default=next_id, ddl='varchar(50)')
+	name = StringField(ddl='varchar(50)')
+	image = StringField(ddl='varchar(500)')	
+	url = StringField(ddl='varchar(500)')
+	year = IntegerField()
+	introduction = StringField(ddl='varchar(500)')
 	created_at = FloatField(default=time.time)
 
 

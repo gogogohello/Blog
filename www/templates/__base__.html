@@ -21,17 +21,16 @@
     <meta charset="utf-8" />
     {% block meta %}<!-- block meta  -->{% endblock %}
     <title>{% block title %} ? {% endblock %} - Deep run</title>
-	<link rel="icon" href="/static/img/icon.png" type="image/x-icon">
-	<link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon">
-	<link rel="stylesheet" href="/static/css/uikit.min.css">
-    <link rel="stylesheet" href="/static/css/uikit.gradient.min.css">
+    <link rel="icon" href="/static/img/icon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/static/img/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/static/uikit/css/uikit.min.css"/>
+    <link rel="stylesheet" href="/static/uikit/css/uikit-rtl.min.css"/>
     <link rel="stylesheet" href="/static/css/awesome.css" />
     <link rel="stylesheet" href="/static/css/code.css" />
-	<!--<link rel="stylesheet" href="/static/css/github.css" />
-	<link rel="stylesheet" href="/static/css/default.css" />-->
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/sha1.min.js"></script>
-    <script src="/static/js/uikit.min.js"></script>
+	<script src="/static/uikit/js/uikit.min.js"></script>
+	<script src="/static/uikit/js/uikit-icons.min.js"></script>
     <script src="/static/js/sticky.min.js"></script>
     <script src="/static/js/vue.min.js"></script>
     <script src="/static/js/awesome.js"></script>
@@ -48,47 +47,50 @@
 	});
 	</script>
 	<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-	<!--<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>-->
     {% block beforehead %}<!-- before head  -->{% endblock %}
 </head>
 <body>
-    <nav class="uk-navbar uk-navbar-attached uk-margin-bottom">
-        <div class="uk-container uk-container-center">
-            <a href="/" class="uk-navbar-brand">Deep run</a>
-            <ul class="uk-navbar-nav">
-                <li class="uk-active" data-url="blogs"><a href="/"><i class="uk-icon-home"></i> 笔记</a></li>
-                <li><a href="/"><i class="uk-icon-book"></i> 读书</a></li>
-                <li><a href="/"><i class="uk-icon-code"></i> 编程</a></li>
-            </ul>
-            <div class="uk-navbar-flip">
-                <ul class="uk-navbar-nav">
-                {% if __user__ %}
-                    <li class="uk-parent" data-uk-dropdown>
-                        <a href="#0"><i class="uk-icon-user"></i> {{ __user__.name }}</a>
-                        <div class="uk-dropdown uk-dropdown-navbar">
-                            <ul class="uk-nav uk-nav-navbar">
-                                <li><a href="/signout"><i class="uk-icon-sign-out"></i> 退出</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                {% else %}
-					<li class="uk-parent" data-uk-dropdown>
-						<a href="#0"></a>
-						<div class="uk-dropdown uk-dropdown-navbar">
-							<ul class="uk-nav uk-nav-navbar">
-								<li><a href="/signin"><i class="uk-icon-sign-in"></i> 登录</a></li>
-								<li><a href="/register"><i class="uk-icon-edit"></i> 注册</a></li>
+<div uk-sticky="media: 960" class="tm-navbar-container uk-sticky uk-active uk-sticky-below uk-sticky-fixed" style="background: linear-gradient(to left, #28a5f5, #1e87f0);">
+	<div class="uk-container">
+		<nav class="uk-visible@m uk-navbar-transparent uk-light uk-navbar" uk-navbar>
+			<div class="uk-navbar-left">
+				<a href="/" class="uk-navbar-item uk-logo">Deep run</a>
+				<ul class="uk-navbar-nav">
+					<li class="uk-active" data-url="blogs"><a href="/">笔记</a></li>
+					<li><a href="/page/books">读书</a></li>
+					<li><a href="/">编程</a></li>
+				</ul>
+			</div>
+			<div class="uk-navbar-right">
+				<ul class="uk-navbar-nav">
+				{% if __user__ %}
+					<li>
+						<a href="#0"><i uk-icon="icon: user"></i> {{ __user__.name }}</a>
+						<div class="uk-navbar-dropdown">
+							<ul class="uk-nav uk-navbar-dropdown-nav">
+								<li><a href="/signout"><i uk-icon="icon: sign-out"></i> 退出</a></li>
 							</ul>
 						</div>
 					</li>
-                {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+	            {% else %}
+					<li>
+						<a href="#0"><i uk-icon="icon: user" class="uk-icon-link uk-icon"></i></a>
+						<div class="uk-navbar-dropdown">
+							<ul class="uk-nav uk-navbar-dropdown-nav">
+								<li><a href="/signin"><i uk-icon="icon: sign-in"></i> 登录</a></li>
+								<li><a href="/register"><i uk-icon="icon: pencil"></i> 注册</a></li>
+							</ul>
+						</div>
+					</li>
+	            {% endif %}
+				</ul>
+			</div>
+	    </nav>
+	</div>
+</div>
 
     <div class="uk-container uk-container-center">
-        <div class="uk-grid">
+        <div class="uk-grid uk-margin-top">
             <!-- content -->
             {% block content %}
             {% endblock %}
@@ -96,17 +98,15 @@
         </div>
     </div>
 
-    <div class="uk-margin-large-top" style="background-color:#eee; border-top:1px solid #ccc;">
+    <div class="uk-margin-large-top uk-background-secondary uk-padding">
         <div class="uk-container uk-container-center uk-text-center">
             <div class="uk-panel uk-margin-top uk-margin-bottom">
                 <p>
-                    <a target="_blank" href="http://weibo.com/" class="uk-icon-button uk-icon-weibo"></a>
-                    <a target="_blank" href="https://github.com/peedeep" class="uk-icon-button uk-icon-github"></a>
+                    <a target="_blank" href="https://github.com/peedeep" uk-icon="icon: github" class="uk-icon-link uk-icon"></a>
                 </p>
-                <p>Powered by <a href="http://deep.run">深度学习</a>. Copyright &copy; 2020. [<a href="/manage/" target="_blank">Manage</a>]</p>
-                <p><a href="http://deep.run" target="_blank">www.deep.run</a>. All rights reserved.</p>
-				<p><a href="http://beian.miit.gov.cn/">赣ICP备20007269号-1</a></p>
-                <a target="_blank" href="http://www.w3.org/TR/html5/"><i class="uk-icon-html5" style="font-size:64px; color: #444;"></i></a>
+                <p>Powered by <a class="uk-link-text" href="http://deep.run">深度学习</a>. Copyright &copy; 2020. [<a class="uk-link-text" href="/manage/" target="_blank">Manage</a>]</p>
+                <p><a class="uk-link-text" href="http://deep.run" target="_blank">www.deep.run</a>. All rights reserved.</p>
+				<p><a class="uk-link-text" href="http://beian.miit.gov.cn/">赣ICP备20007269号-1</a></p>
             </div>
 
         </div>

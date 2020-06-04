@@ -1,13 +1,15 @@
 <!DOCTYPE html>
-<html class="uk-height-1-1">
+<html>
 <head>
-    <meta charset="utf-8" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
     <title>登录 - Deep run</title>
-    <link rel="stylesheet" href="/static/css/uikit.min.css">
-    <link rel="stylesheet" href="/static/css/uikit.gradient.min.css">
+    <link rel="stylesheet" href="/static/uikit/css/uikit.min.css"/>
+	<link rel="stylesheet" href="/static/uikit/css/uikit-rtl.min.css"/>
     <script src="/static/js/jquery.min.js"></script>
     <script src="/static/js/sha1.min.js"></script>
-    <script src="/static/js/uikit.min.js"></script>
+    <script src="/static/uikit/js/uikit.min.js"></script>
+	<script src="/static/uikit/js/uikit-icons.min.js"></script>
     <script src="/static/js/vue.min.js"></script>
     <script src="/static/js/awesome.js"></script>
     <script>
@@ -41,26 +43,26 @@ $(function() {
 
     </script>
 </head>
-<body class="uk-height-1-1">
-    <div class="uk-vertical-align uk-text-center uk-height-1-1">
-        <div class="uk-vertical-align-middle" style="width: 320px">
-            <p><a href="/" class="uk-icon-button"><i class="uk-icon-html5"></i></a> <a href="/">Deep run</a></p>
-            <form id="vm" v-on="submit: submit" class="uk-panel uk-panel-box uk-form">
+<body>
+    <div class="uk-margin-large-top uk-padding">
+        <div class="uk-container uk-card uk-card-default uk-card-body uk-width-2-5">
+            <p><a href="/">Deep run</a></p>
+            <form id="vm" v-on="submit: submit">
                 <div class="uk-alert uk-alert-danger uk-hidden"></div>
-                <div class="uk-form-row">
-                    <div class="uk-form-icon uk-width-1-1">
-                        <i class="uk-icon-envelope-o"></i>
-                        <input v-model="email" name="email" type="text" placeholder="电子邮件" maxlength="50" class="uk-width-1-1 uk-form-large">
+                <div class="uk-margin">
+                    <div class="uk-inline">
+                        <i class="uk-form-icon" uk-icon="icon: user"></i>
+                        <input v-model="email" name="email" type="text" class="uk-input" id="form-stacked-text" placeholder="邮箱" maxlength="50">
                     </div>
                 </div>
-                <div class="uk-form-row">
-                    <div class="uk-form-icon uk-width-1-1">
-                        <i class="uk-icon-lock"></i>
-                        <input v-model="passwd" name="passwd" type="password" placeholder="密码" maxlength="50" class="uk-width-1-1 uk-form-large">
+                <div class="uk-margin">
+                    <div class="uk-inline">
+                        <i class="uk-form-icon" uk-icon="icon: lock"></i>
+                        <input v-model="passwd" name="passwd" type="password" class="uk-input" id="form-stacked-text" placeholder="密码" maxlength="50">
                     </div>
                 </div>
-                <div class="uk-form-row">
-                    <button type="submit" class="uk-width-1-1 uk-button uk-button-primary uk-button-large"><i class="uk-icon-sign-in"></i> 登录</button>
+                <div class="uk-margin">
+                    <button type="submit" class="uk-button uk-button-primary" style="width:200px">登录</button>
                 </div>
             </form>
         </div>

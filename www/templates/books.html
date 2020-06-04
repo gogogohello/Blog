@@ -1,0 +1,27 @@
+{% extends '__base__.html' %}
+
+{% block title %}读书{% endblock %}
+
+{% block beforehead %}
+
+<script>
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+	<div class="uk-child-width-1-2@s uk-grid-match" uk-grid uk-scrollspy="cls: uk-animation-slide-bottom; target: .uk-card; delay: 300; repeat: true">
+	{% for book in books %}
+		<div>
+			<div class="uk-card uk-card-default uk-card-hover uk-card-body">
+				<h3 class="uk-card-title"><a>{{ book.name }}</a></h3>
+				<p>{{ book.introduction }}</p>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+
+{% endblock  %}
+
+

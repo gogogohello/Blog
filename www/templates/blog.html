@@ -31,11 +31,11 @@ $(function () {
 
 {% block content %}
 
-    <div class="uk-width-medium-3-4">
+    <div class="uk-width-3-4">
         <article class="uk-article">
-            <h2>{{ blog.name }}</h2>
+            <h2 class="uk-article_title">{{ blog.name }}</h2>
             <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
-            <p class="codehilite">{{ blog.html_content|safe }}</p>
+            <p class="codehilite uk-text-lead">{{ blog.html_content|safe }}</p>
         </article>
 
         <hr class="uk-article-divider">
@@ -44,18 +44,24 @@ $(function () {
         <h3>冒个泡</h3>
 
         <article class="uk-comment">
-            <header class="uk-comment-header">
-                <img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{{ __user__.image }}">
-                <h4 class="uk-comment-title">{{ __user__.name }}</h4>
+            <header class="uk-comment-header uk-position-relative">
+				<div class="uk-grid-medium uk-flex-middle" uk-grid>
+					<div class="uk-width-auto">
+						<img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{{ __user__.image }}">
+					</div>
+					<div class="uk-width-expand">
+						<h4 class="uk-comment-title">{{ __user__.name }}</h4>
+					</div>
+				</div>
             </header>
             <div class="uk-comment-body">
                 <form id="form-comment" class="uk-form">
                     <div class="uk-alert uk-alert-danger uk-hidden"></div>
-                    <div class="uk-form-row">
-                        <textarea rows="6" placeholder="说点什么吧" style="width:100%;resize:none;"></textarea>
+                    <div class="uk-margin">
+                        <textarea rows="6" class="uk-textarea" placeholder="冒个泡吧" style="width:100%;resize:none;"></textarea>
                     </div>
-                    <div class="uk-form-row">
-                        <button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-comment"></i> 发表评论</button>
+                    <div class="uk-margin">
+                        <button type="submit" class="uk-button uk-button-primary"><i uk-icon="icon: comment"></i> 提交</button>
                     </div>
                 </form>
             </div>
@@ -69,11 +75,17 @@ $(function () {
         <ul class="uk-comment-list">
             {% for comment in comments %}
             <li>
-                <article class="uk-comment">
-                    <header class="uk-comment-header">
-                        <img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{{ comment.user_image }}">
-                        <h4 class="uk-comment-title">{{ comment.user_name }} {% if comment.user_id==blog.user_id %}(作者){% endif %}</h4>
-                        <p class="uk-comment-meta">{{ comment.created_at|datetime }}</p>
+                <article class="uk-comment uk-comment-primary uk-visible-toggle" tabindex="-1">
+                    <header class="uk-comment-header uk-position-relative">
+						<div class="uk-grid-medium uk-flex-middle" uk-grid>
+							<div class="uk-width-auto">
+								<img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{{ comment.user_image }}">
+							</div>
+							<div class="uk-width-expand">
+								<h4 class="uk-comment-title uk-margin-remove">{{ comment.user_name }} {% if comment.user_id==blog.user_id %}(作者){% endif %}</h4>
+								<p class="uk-comment-meta uk-margin-remove">{{ comment.created_at|datetime }}</p>
+							</div>
+						</div>
                     </header>
                     <div class="uk-comment-body">
                         {{ comment.html_content|safe }}
@@ -87,7 +99,7 @@ $(function () {
 
     </div>
 
-    <div class="uk-width-medium-1-4">
+    <div class="uk-width-1-4">
         <div class="uk-panel uk-panel-box">
             <div class="uk-text-center">
                 <img class="uk-border-circle" width="120" height="120" src="{{ blog.user_image }}">
@@ -97,9 +109,9 @@ $(function () {
         <div class="uk-panel uk-panel-header">
             <h3 class="uk-panel-title">友情链接</h3>
             <ul class="uk-list uk-list-line">
-                <li><i class="uk-icon-link"></i> <a href="#">编程</a></li>
-                <li><i class="uk-icon-link"></i> <a href="#">思考</a></li>
-                <li><i class="uk-icon-link"></i> <a href="#">读书</a></li>
+                <li><i uk-icon="icon: link"></i> <a href="#">编程</a></li>
+                <li><i uk-icon="icon: link"></i> <a href="#">思考</a></li>
+                <li><i uk-icon="icon: link"></i> <a href="#">读书</a></li>
             </ul>
         </div>
     </div>
