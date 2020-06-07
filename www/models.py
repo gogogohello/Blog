@@ -52,7 +52,8 @@ class Book(Model):
 
 	id = StringField(primary_key=True, default=next_id, ddl='varchar(50)')
 	name = StringField(ddl='varchar(50)')
-	image = StringField(ddl='varchar(500)')	
+	image = StringField(ddl='varchar(500)')
+	author = StringField(ddl='varchar(50)')
 	url = StringField(ddl='varchar(500)')
 	year = IntegerField()
 	introduction = StringField(ddl='varchar(500)')

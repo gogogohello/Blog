@@ -3,6 +3,7 @@ use test;
 create table books(
 	`id` varchar(50) not null,
 	`name` varchar(100) not null,
+	`author` varchar(100) not null,
 	`image` varchar(500),
 	`url` varchar(500),
 	`year` smallint unsigned not null,
