@@ -7,14 +7,34 @@
 <script>
 
 function initVM(data) {
-    $('#vm').show();
+    $('#app').show();
     var vm = new Vue({
-        el: '#vm',
+        el: '#app',
         data: {
             users: data.users,
             page: data.page
-        }
+        },
+		methods: {
+			click_previous: function() {
+				getPageUsers(vm, this.page.page_index - 1)
+			},	
+			click_next: function() {                          
+				getPageUsers(vm, this.page.page_index + 1);
+			}
+		}
     });
+}
+
+function getPageUsers(vm, page_index) {
+	getJSON('/api/users', { 
+	   page: page_index       
+	}, function(err, results) {
+		if (err) {                                      
+			return fatal(err);                          
+		}
+		Vue.set(vm.$data, "users", results.users);
+		Vue.set(vm.$data, "page", results.page);
+	});
 }
 
 $(function() {
@@ -52,7 +72,7 @@ $(function() {
         <span><i class="uk-icon-spinner uk-icon-medium uk-icon-spin"></i> 正在加载...</span>
     </div>
 
-    <div id="vm" class="uk-width-1-1">
+    <div id="app" class="uk-width-1-1">
         <table class="uk-table uk-table-striped uk-table-middle uk-table-hover">
             <thead>
                 <tr>
@@ -62,13 +82,13 @@ $(function() {
                 </tr>
             </thead>
             <tbody>
-                <tr v-repeat="user: users" >
+                <tr v-for="user in users" >
                     <td>
                         <span v-text="user.name"></span>
                         <span v-if="user.admin" style="color:#d05"><i class="uk-icon-key"></i> 管理员</span>
                     </td>
                     <td>
-                        <a v-attr="href: 'mailto:'+user.email" v-text="user.email"></a>
+                        <a v-bind="'mailto:'+user.email" v-text="user.email"></a>
                     </td>
                     <td>
                         <span v-text="user.created_at.toDateTime()"></span>
@@ -76,7 +96,13 @@ $(function() {
                 </tr>
             </tbody>
         </table>
-        <div v-component="pagination" v-with="page"></div>
+        <div>
+			<ul class="uk-pagination uk-flex-center" uk-margin>
+				<li v-bind:class="!page.has_previous ? 'uk-disabled' : ''"><a href="#0" v-on:click="click_previous()"><span uk-pagination-previous></span></a></li>
+				<li class="uk-active"><span v-text="page.page_index"></span></li>
+				<li v-bind:class="!page.has_next ? 'uk-disabled' : ''"><a href="#0" v-on:click="click_next()"><span uk-pagination-next></span></a></li>
+			</ul>
+		</div>
     </div>
 
 {% endblock %}

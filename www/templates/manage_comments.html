@@ -7,12 +7,12 @@
 <script>
 
 function initVM(data) {
-    $('#vm').show();
+    $('#app').show();
     var vm = new Vue({
-        el: '#vm',
+        el: '#app',
         data: {
             comments: data.comments,
-            page: data.page
+            page: data.page,
         },
         methods: {
             delete_comment: function (comment) {
@@ -25,14 +25,32 @@ function initVM(data) {
                         refresh();
                     });
                 }
-            }
+            },
+            click_previous: function() {
+			    getPageComments(vm, this.page.page_index - 1);
+			},
+            click_next: function() {
+				getPageComments(vm, this.page.page_index + 1);
+			}
         }
     });
 }
 
-$(function() {
+function getPageComments(vm, page_index) {
+	getJSON('/api/comments', {
+		page: page_index
+	}, function(err, results) {
+		if (err) {
+			return fatal(err);
+		}
+		Vue.set(vm.$data, "comments", results.comments);
+		Vue.set(vm.$data, "page", results.page);
+	})
+}
+
+function getComments(index) {
     getJSON('/api/comments', {
-        page: {{ page_index }}
+        page: index
     }, function (err, results) {
         if (err) {
             return fatal(err);
@@ -40,7 +58,9 @@ $(function() {
         $('#loading').hide();
         initVM(results);
     });
-});
+};
+
+$(getComments({{ page_index }}));
 
 </script>
 
@@ -65,7 +85,7 @@ $(function() {
         <span><i class="uk-icon-spinner uk-icon-medium uk-icon-spin"></i> 正在加载...</span>
     </div>
 
-    <div id="vm" class="uk-width-1-1" style="display:none">
+    <div id="app" class="uk-width-1-1" style="display:none">
         <table class="uk-table uk-table-striped uk-table-middle uk-table-hover">
             <thead>
                 <tr>
@@ -76,7 +96,7 @@ $(function() {
                 </tr>
             </thead>
             <tbody>
-                <tr v-repeat="comment: comments" >
+                <tr v-for="comment in comments">
                     <td>
                         <span v-text="comment.user_name"></span>
                     </td>
@@ -87,11 +107,17 @@ $(function() {
                         <span v-text="comment.created_at.toDateTime()"></span>
                     </td>
                     <td>
-                        <a href="#0" v-on="click: delete_comment(comment)"><i uk-icon="icon: trash"></i>
+                        <a href="#0" v-on:click="delete_comment(comment)"><i uk-icon="icon: trash"></i>
                     </td>
-                </tr>
+				</tr>
             </tbody>
-        </table>
-        <div v-component="pagination" v-with="page"></div>
+		</table>
+        <div>
+			<ul class="uk-pagination uk-flex-center" uk-margin>
+					<li v-bind:class="!page.has_previous ? 'uk-disabled' : ''"><a href="#0" v-on:click="click_previous()"><span uk-pagination-previous></span></a></li>
+					<li class="uk-active"><span v-text="page.page_index"></span></li>
+					<li v-bind:class="!page.has_next ? 'uk-disabled' : ''"><a href="#0" v-on:click="click_next()"><span uk-pagination-next></span></a></li>
+			</ul>
+		</div>
     </div>
 {% endblock %}
