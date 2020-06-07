@@ -218,20 +218,23 @@ async def manage():
 
 @get('/manage/comments')
 async def manage_comments(*, page='1'):
+	data = await api_comments(page=page)
 	return {
 		'__template__': 'manage_comments.html',
-		'page_index': get_page_index(page)
+		'page_index': get_page_index(page),
+		'data': data
 	}
 
 
 @get('/api/comments')
 async def api_comments(*, page='1'):
 	page_index = get_page_index(page)
-	num = await Blog.findNumber('count(id)')
+	num = await Comment.findNumber('count(id)')
 	p = Page(num, page_index)
 	if num == 0:
 		return dict(page=p, comments=())
 	comments = await Comment.findAll(orderBy='created_at desc', limit=(p.offset, p.limit))
+	logging.info('api comments p: %s, has previous: %s, has_next: %s' % (str(p), p.has_previous, p.has_next))
 	return dict(page=p, comments=comments)
 
 
