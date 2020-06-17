@@ -54,9 +54,21 @@ class Book(Model):
 	name = StringField(ddl='varchar(50)')
 	image = StringField(ddl='varchar(500)')
 	author = StringField(ddl='varchar(50)')
-	url = StringField(ddl='varchar(500)')
+	content = TextField()
 	year = IntegerField()
+	url = StringField(ddl='varchar(500)')
 	introduction = StringField(ddl='varchar(500)')
+	created_at = FloatField(default=time.time)
+
+class BookReview(Model):
+	__table__ = 'bookreviews'
+
+	id = StringField(primary_key=True, default=next_id, ddl='varchar(50)')
+	book_id = StringField(ddl='varchar(50)')
+	user_id = StringField(ddl='varchar(50)')
+	user_name = StringField(ddl='varchar(50)')
+	user_image = StringField(ddl='varchar(500)')
+	content = TextField()
 	created_at = FloatField(default=time.time)
 
 

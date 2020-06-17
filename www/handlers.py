@@ -92,7 +92,7 @@ async def index(request):
 	}
 
 
-@get('/page/books')
+@get('/books')
 async def get_books(*, page='1'):
 	books = await Book.findAll(orderBy='created_at desc')
 	return {
@@ -110,6 +110,100 @@ async def api_books(*, page='1'):
 		return dict(page=p, books=())
 	books = await Book.findAll(orderBy='created_at desc', limit=limit(p.offset, p.limit))
 	return dict(page=p, books=books)
+
+
+@post('/api/books')
+async def api_create_book(request, *, name, author, content, year, instroduction):
+	check_admin(request)
+	if not name or not name.strip():
+	    raise APIValueError('name', 'name cannot be empty.')
+	if not author or not author.strip():
+		raise APIValueError('author', 'author cannot be empty.')
+	if not content or not content.strip():
+		raise APIValueError('content', 'content cannot be empty.')
+	user = request.__user__
+	book = Book(user_id=user.id, user_name=user.name, user_image=user.image,
+			name=name.strip(), author=author.strip(), content=content.strip(), year=year, instroduction=instroduction.strip())
+	await book.save()
+	return book
+
+
+@post('/api/books/{id}')
+async def api_update_book(id, request, *, name, author, content, year, instroduction):
+	check_admin(request)
+	if not name or not name.strip():
+	    raise APIValueError('name', 'name cannot be empty.')
+	if not author or not author.strip():
+	    raise APIValueError('author', 'author cannot be empty.')
+	if not content or not content.strip():
+		raise APIValueError('content', 'content cannot be empty.')
+	book = Book.find(id)
+	book.name = name.strip()
+	book.author = author.strip()
+	book.content = content.strip()
+	book.year = year.strip()
+	book.instroduction = introduction.strip()
+	await book.update()
+	return book
+
+@post('/api/books/{id}/delete')
+async def api_delete_book(request, *, id):
+	check_admin(request)
+	book = await Book.find(id)
+	await book.delete()
+	return dict(id=id)
+
+
+@get('/book/{id}')
+async def get_book(id):
+	book = await Book.find(id)
+	book.html_content = markdown2.markdown(book.content, extras=[
+		'code-friendly', 
+		'break-on-newline',
+		'fenced-code-blocks',
+		'cuddled-lists',
+		'footnotes', 
+		'header-ids',
+		'numbering',
+		'metadata',
+		'nofollow',
+		'pyshell',
+		'smarty-pants',
+		'spoiler',
+		'target-blank-links',
+		'toc',
+		'tables',
+		'use-file-vars',
+		'wiki-tables'
+	])
+	return {
+		'__template__': 'book.html',
+		'book': book
+	}
+
+
+@get('/manage/books')
+async def manage_books(*, page='1'):
+	return {
+		'__template__': 'manage_books.html',
+		'page_index': get_page_index(page)
+	}
+
+
+@get('/manage/books/create')
+async def manage_create_book():
+	return {
+		'__template__': 'manage_book_edit.html',
+		'action': '/api/books'
+	}
+
+@get('/manage/books/edit')
+async def manage_edit_book(*, id):
+	return {
+		'__template__': 'manage_book_edit.html',
+		'id': id,
+		'action': '/api/books/%s' % id
+	}
 
 
 @get('/blog/{id}')
@@ -218,11 +312,9 @@ async def manage():
 
 @get('/manage/comments')
 async def manage_comments(*, page='1'):
-	data = await api_comments(page=page)
 	return {
 		'__template__': 'manage_comments.html',
-		'page_index': get_page_index(page),
-		'data': data
+		'page_index': get_page_index(page)
 	}
 
 
