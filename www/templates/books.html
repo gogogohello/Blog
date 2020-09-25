@@ -11,7 +11,7 @@
 
 {% block nav %}
 	<li data-url="blogs"><a href="/">笔记</a></li>
-	<li class="uk-active"><a href="/books">读书</a></li>
+	<li class="uk-active"><a href="/books">书籍</a></li>
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@
 				<p>{{ book.introduction }}</p>
 			</div>
 			<div class="uk-card-footer">
-				<a href="#" class="uk-button uk-button-text">Read more</a>
+				<a href="/book/{{ book.id }}" class="uk-button uk-button-text">Read more</a>
 			</div>
 		</div>
 	{% endfor %}

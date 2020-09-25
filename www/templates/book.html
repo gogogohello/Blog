@@ -1,12 +1,12 @@
 {% extends '__base__.html' %}
 
-{% block title %}{{ blog.name }}{% endblock %}
+{% block title %}{{ book.name }}{% endblock %}
 
 {% block beforehead %}
 
 <script>
 
-var comment_url = '/api/blogs/{{ blog.id }}/comments';
+var comment_url = '/api/books/{{ book.id }}/comments';
 
 $(function () {
     var $form = $('#form-comment');
@@ -30,17 +30,17 @@ $(function () {
 {% endblock %}
 
 {% block nav %}
-	<li class="uk-active" data-url="blogs"><a href="/">笔记</a></li>
-	<li><a href="/books">书籍</a></li>
+	<li data-url="blogs"><a href="/">笔记</a></li>
+	<li class="uk-active"><a href="/books">书籍</a></li>
 {% endblock %}
 
 {% block content %}
 
     <div class="uk-width-3-4">
         <article class="uk-article">
-            <h2 class="uk-article_title">{{ blog.name }}</h2>
-            <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
-            <p class="codehilite uk-text-lead">{{ blog.html_content|safe }}</p>
+            <h2 class="uk-article_title">{{ book.name }}</h2>
+			<p class="uk-article-meta">发表于{{ book.created_at|datetime }}   <span>，   出版于：{{ book.year }}年</span></p>
+            <p class="codehilite uk-text-lead">{{ book.html_content|safe }}</p>
         </article>
 
         <hr class="uk-article-divider">
@@ -87,7 +87,7 @@ $(function () {
 								<img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{{ comment.user_image }}">
 							</div>
 							<div class="uk-width-expand">
-								<h4 class="uk-comment-title uk-margin-remove">{{ comment.user_name }} {% if comment.user_id==blog.user_id %}(作者){% endif %}</h4>
+								<h4 class="uk-comment-title uk-margin-remove">{{ comment.user_name }} {% if comment.user_id==book.user_id %}(读者){% endif %}</h4>
 								<p class="uk-comment-meta uk-margin-remove">{{ comment.created_at|datetime }}</p>
 							</div>
 						</div>
@@ -107,8 +107,8 @@ $(function () {
     <div class="uk-width-1-4">
         <div class="uk-panel uk-panel-box">
             <div class="uk-text-center">
-                <img class="uk-border-circle" width="120" height="120" src="{{ blog.user_image }}">
-                <h3>{{ blog.user_name }}</h3>
+                <img class="uk-border-circle" width="120" height="120" src="{{ book.user_image }}">
+                <h3>{{ book.user_name }}</h3>
             </div>
         </div>
         <div class="uk-panel uk-panel-header">

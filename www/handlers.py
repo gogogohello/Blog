@@ -108,41 +108,46 @@ async def api_books(*, page='1'):
 	p = Page(num, page_index)
 	if num == 0:
 		return dict(page=p, books=())
-	books = await Book.findAll(orderBy='created_at desc', limit=limit(p.offset, p.limit))
+	books = await Book.findAll(orderBy='created_at desc', limit=(p.offset, p.limit))
 	return dict(page=p, books=books)
 
 
 @post('/api/books')
-async def api_create_book(request, *, name, author, content, year, instroduction):
+async def api_create_book(request, *, name, author, image, introduction, year):
 	check_admin(request)
 	if not name or not name.strip():
 	    raise APIValueError('name', 'name cannot be empty.')
 	if not author or not author.strip():
 		raise APIValueError('author', 'author cannot be empty.')
-	if not content or not content.strip():
-		raise APIValueError('content', 'content cannot be empty.')
-	user = request.__user__
-	book = Book(user_id=user.id, user_name=user.name, user_image=user.image,
-			name=name.strip(), author=author.strip(), content=content.strip(), year=year, instroduction=instroduction.strip())
+	if not introduction or not introduction.strip():
+		raise APIValueError('introduction', 'introduction cannot be empty.')
+	book = Book(name=name.strip(), author=author.strip(), image=image.strip(),
+			year=year, introduction=introduction.strip())
 	await book.save()
 	return book
 
 
+@get('/api/books/{id}')
+async def api_get_book(*, id):
+	book = await Book.find(id)
+	return book
+
+
 @post('/api/books/{id}')
-async def api_update_book(id, request, *, name, author, content, year, instroduction):
+async def api_update_book(id, request, *, name, author, image, year, introduction):
 	check_admin(request)
 	if not name or not name.strip():
 	    raise APIValueError('name', 'name cannot be empty.')
 	if not author or not author.strip():
 	    raise APIValueError('author', 'author cannot be empty.')
-	if not content or not content.strip():
-		raise APIValueError('content', 'content cannot be empty.')
-	book = Book.find(id)
+	if not introduction or not introduction.strip():
+		raise APIValueError('introduction', 'introduction cannot be empty.')
+	book = await Book.find(id)
 	book.name = name.strip()
 	book.author = author.strip()
-	book.content = content.strip()
-	book.year = year.strip()
-	book.instroduction = introduction.strip()
+	book.image = image.strip()
+	book.year = year
+	book.introduction = introduction.strip()
 	await book.update()
 	return book
 
@@ -150,14 +155,14 @@ async def api_update_book(id, request, *, name, author, content, year, instroduc
 async def api_delete_book(request, *, id):
 	check_admin(request)
 	book = await Book.find(id)
-	await book.delete()
+	await book.remove()
 	return dict(id=id)
 
 
 @get('/book/{id}')
 async def get_book(id):
 	book = await Book.find(id)
-	book.html_content = markdown2.markdown(book.content, extras=[
+	book.html_content = markdown2.markdown(book.introduction, extras=[
 		'code-friendly', 
 		'break-on-newline',
 		'fenced-code-blocks',
@@ -194,6 +199,7 @@ async def manage_books(*, page='1'):
 async def manage_create_book():
 	return {
 		'__template__': 'manage_book_edit.html',
+		'id': '',
 		'action': '/api/books'
 	}
 
