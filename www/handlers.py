@@ -23,6 +23,11 @@ from config import configs
 COOKIE_NAME = 'deepsession'
 _COOKIE_KEY = configs.session.secret
 
+markdown2_extras=extras=[
+	'code-friendly', 'break-on-newline', 'fenced-code-blocks', 'cuddled-lists', 
+	'footnotes', 'header-ids', 'numbering', 'metadata', 'nofollow', 'pyshell', 'smarty-pants',
+	'spoiler','target-blank-links', 'toc','tables', 'use-file-vars','wiki-tables']
+
 
 def check_admin(request):
 	if request.__user__ is None or not request.__user__.admin:
@@ -113,7 +118,7 @@ async def api_books(*, page='1'):
 
 
 @post('/api/books')
-async def api_create_book(request, *, name, author, image, introduction, year):
+async def api_create_book(request, *, name, author, image, year, introduction, content):
 	check_admin(request)
 	if not name or not name.strip():
 	    raise APIValueError('name', 'name cannot be empty.')
@@ -122,7 +127,7 @@ async def api_create_book(request, *, name, author, image, introduction, year):
 	if not introduction or not introduction.strip():
 		raise APIValueError('introduction', 'introduction cannot be empty.')
 	book = Book(name=name.strip(), author=author.strip(), image=image.strip(),
-			year=year, introduction=introduction.strip())
+			year=year, introduction=introduction.strip(), content=content.strip())
 	await book.save()
 	return book
 
@@ -134,7 +139,7 @@ async def api_get_book(*, id):
 
 
 @post('/api/books/{id}')
-async def api_update_book(id, request, *, name, author, image, year, introduction):
+async def api_update_book(id, request, *, name, author, image, year, introduction, content):
 	check_admin(request)
 	if not name or not name.strip():
 	    raise APIValueError('name', 'name cannot be empty.')
@@ -148,6 +153,7 @@ async def api_update_book(id, request, *, name, author, image, year, introductio
 	book.image = image.strip()
 	book.year = year
 	book.introduction = introduction.strip()
+	book.content = content.strip()
 	await book.update()
 	return book
 
@@ -162,25 +168,11 @@ async def api_delete_book(request, *, id):
 @get('/book/{id}')
 async def get_book(id):
 	book = await Book.find(id)
-	book.html_content = markdown2.markdown(book.introduction, extras=[
-		'code-friendly', 
-		'break-on-newline',
-		'fenced-code-blocks',
-		'cuddled-lists',
-		'footnotes', 
-		'header-ids',
-		'numbering',
-		'metadata',
-		'nofollow',
-		'pyshell',
-		'smarty-pants',
-		'spoiler',
-		'target-blank-links',
-		'toc',
-		'tables',
-		'use-file-vars',
-		'wiki-tables'
-	])
+	if not book.content or not book.content.strip():
+		book.html_content = ''
+	else:
+		book.html_content = markdown2.markdown(book.content, extras=markdown2_extras)
+	book.html_introduction = markdown2.markdown(book.introduction, extras=markdown2_extras)
 	return {
 		'__template__': 'book.html',
 		'book': book

@@ -39,7 +39,8 @@ $(function () {
     <div class="uk-width-3-4">
         <article class="uk-article">
             <h2 class="uk-article_title">{{ book.name }}</h2>
-			<p class="uk-article-meta">发表于{{ book.created_at|datetime }}   <span>，   出版于：{{ book.year }}年</span></p>
+			<p class="uk-article-meta">发表于{{ book.created_at|datetime }}   <span>   出版于{{ book.year }}年</span></p>
+			<p class="codehilite uk-text-lead">{{ book.html_introduction|safe }}</p>
             <p class="codehilite uk-text-lead">{{ book.html_content|safe }}</p>
         </article>
 
