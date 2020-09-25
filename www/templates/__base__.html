@@ -56,8 +56,9 @@
 			<div class="uk-navbar-left">
 				<a href="/" class="uk-navbar-item uk-logo">Deep run</a>
 				<ul class="uk-navbar-nav">
-					<li class="uk-active" data-url="blogs"><a href="/">笔记</a></li>
-					<li><a href="/books">读书</a></li>
+					{% block nav %} <!-- nav --> {% endblock %}
+					<!--<li class="uk-active" data-url="blogs"><a href="/">笔记</a></li>-->
+					<!--<li><a href="/books">读书</a></li>-->
 				</ul>
 			</div>
 			<div class="uk-navbar-right">
