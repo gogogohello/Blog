@@ -23,7 +23,7 @@
 			<div class="uk-card-header">
 				<div class="uk-grid-small uk-flex-middle" uk-grid>
 					<div class="uk-width-auto">
-						<img width="50" height="70" src={{ book.image }}>
+						<img width="60" height="80" src={{ book.image }} onerror="this.src='/static/img/default_book.jpg'">
 					</div>
 					<div class="uk-width-expand">
 						<h3 class="uk-card-title uk-margin-remove-bottom">{{ book.name }}</h3>
@@ -31,7 +31,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="uk-card-body uk-height-small">
+			<div class="uk-card-body uk-height-medium">
 				<p>{{ book.introduction }}</p>
 			</div>
 			<div class="uk-card-footer">
