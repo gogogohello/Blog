@@ -23,7 +23,7 @@
 			<div class="uk-card-header">
 				<div class="uk-grid-small uk-flex-middle" uk-grid>
 					<div class="uk-width-auto">
-						<img width="70" height="50" src={{ book.image }}>
+						<img width="50" height="70" src={{ book.image }}>
 					</div>
 					<div class="uk-width-expand">
 						<h3 class="uk-card-title uk-margin-remove-bottom">{{ book.name }}</h3>
@@ -31,10 +31,10 @@
 					</div>
 				</div>
 			</div>
-			<div class="uk-card-body">
+			<div class="uk-card-body uk-height-small">
 				<p>{{ book.introduction }}</p>
 			</div>
-			<div class="uk-card-footer" height="30">
+			<div class="uk-card-footer">
 				<a href="/book/{{ book.id }}" class="uk-button uk-button-text">更多</a>
 			</div>
 		</div>
